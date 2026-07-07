@@ -41,7 +41,7 @@ export function Navbar() {
   useEffect(() => setOpen(false), [pathname]);
 
   const isHome = pathname === '/';
-  const light = isHome && !scrolled;
+  const light = false; // Hero background is now light, so we always want dark navigation links for contrast
 
   return (
     <>

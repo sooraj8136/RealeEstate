@@ -60,8 +60,8 @@ export function PropertyDetail() {
 
   return (
     <PageTransition>
-      <div className="bg-cream pt-24">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+      <div className="bg-cream pt-20 pb-28 sm:pb-24 lg:pb-12">
+        <div className="mx-auto max-w-7xl px-4 sm:px-8">
           <Link
             to="/listings"
             className="inline-flex items-center gap-2 text-sm text-ink/60 transition-colors hover:text-ink"
@@ -70,8 +70,8 @@ export function PropertyDetail() {
           </Link>
 
           {/* gallery */}
-          <div className="mt-6 grid gap-3 lg:grid-cols-4">
-            <div className="relative aspect-[16/10] overflow-hidden rounded-5xl bg-ink lg:col-span-3">
+          <div className="mt-6 grid gap-3 sm:gap-4 lg:grid-cols-4">
+            <div className="relative aspect-[16/10] overflow-hidden rounded-3xl bg-ink sm:rounded-5xl lg:col-span-3">
               <AnimatePresence mode="wait">
                 <motion.img
                   key={activeImg}
@@ -86,28 +86,28 @@ export function PropertyDetail() {
               </AnimatePresence>
               <button
                 onClick={() => setActiveImg((activeImg + property.images.length - 1) % property.images.length)}
-                className="absolute left-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full glass glass-light text-ink"
+                className="absolute left-4 top-1/2 flex h-9 w-9 sm:h-11 sm:w-11 -translate-y-1/2 items-center justify-center rounded-full glass glass-light text-ink transition-all hover:bg-cream"
                 aria-label="Previous image"
               >
-                <ChevronLeft size={20} />
+                <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
               <button
                 onClick={() => setActiveImg((activeImg + 1) % property.images.length)}
-                className="absolute right-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full glass glass-light text-ink"
+                className="absolute right-4 top-1/2 flex h-9 w-9 sm:h-11 sm:w-11 -translate-y-1/2 items-center justify-center rounded-full glass glass-light text-ink transition-all hover:bg-cream"
                 aria-label="Next image"
               >
-                <ChevronRight size={20} />
+                <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
               </button>
               <div className="absolute bottom-4 left-4 rounded-full glass glass-dark px-4 py-1.5 text-xs text-cream">
                 {activeImg + 1} / {property.images.length}
               </div>
             </div>
-            <div className="grid grid-cols-4 gap-3 lg:col-span-1 lg:grid-cols-1">
+            <div className="grid grid-cols-2 gap-2 sm:gap-3 sm:grid-cols-4 lg:col-span-1 lg:grid-cols-1">
               {property.images.slice(0, 4).map((img, i) => (
                 <button
                   key={i}
                   onClick={() => setActiveImg(i)}
-                  className={`relative aspect-square overflow-hidden rounded-3xl transition-all ${
+                  className={`relative aspect-square overflow-hidden rounded-2xl sm:rounded-3xl transition-all ${
                     activeImg === i ? 'ring-2 ring-gold' : 'opacity-70 hover:opacity-100'
                   }`}
                 >
@@ -118,18 +118,25 @@ export function PropertyDetail() {
           </div>
 
           {/* header row */}
-          <div className="mt-8 flex flex-wrap items-start justify-between gap-6">
-            <div>
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+            <div className="w-full sm:max-w-3xl">
               <div className="flex items-center gap-3">
                 <span className="rounded-full bg-gold/15 px-3 py-1 text-xs font-medium text-gold-dark">
                   {property.status}
                 </span>
                 <span className="text-sm text-ink/50">{property.type}</span>
               </div>
-              <h1 className="mt-3 font-display text-4xl font-light tracking-tightest sm:text-5xl">{property.title}</h1>
+              <h1 className="mt-3 font-display text-2xl sm:text-4xl md:text-5xl font-light tracking-tightest">{property.title}</h1>
               <p className="mt-2 flex items-center gap-1.5 text-ink/60">
                 <MapPin size={16} className="text-gold" /> {property.address}, {property.city}
               </p>
+              <div className="mt-4 lg:hidden">
+                <p className="text-xs uppercase tracking-wide text-ink/40">Listed at</p>
+                <p className="mt-1 font-display text-3xl font-medium tracking-tight text-gold-dark">{formatPrice(property.price)}</p>
+                <p className="text-xs text-ink/50">
+                  ${Math.round(property.price / property.sqft).toLocaleString()}/ft²
+                </p>
+              </div>
             </div>
             <div className="flex items-center gap-3">
               <button
@@ -149,16 +156,16 @@ export function PropertyDetail() {
           </div>
 
           {/* key stats */}
-          <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          <div className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 sm:grid-cols-4">
             {[
               { icon: Bed, label: 'Bedrooms', value: property.beds },
               { icon: Bath, label: 'Bathrooms', value: property.baths },
               { icon: Maximize, label: 'Square feet', value: property.sqft.toLocaleString() },
               { icon: Calendar, label: 'Year built', value: property.yearBuilt },
             ].map((s) => (
-              <div key={s.label} className="rounded-3xl border border-ink/10 bg-cream p-5">
-                <s.icon size={20} className="text-gold" />
-                <p className="mt-3 font-display text-2xl font-medium">{s.value}</p>
+              <div key={s.label} className="rounded-2xl border border-ink/10 bg-cream p-4 sm:rounded-3xl sm:p-5">
+                <s.icon size={18} className="text-gold sm:h-5 sm:w-5" />
+                <p className="mt-3 font-display text-xl font-medium sm:text-2xl">{s.value}</p>
                 <p className="text-sm text-ink/50">{s.label}</p>
               </div>
             ))}
@@ -168,12 +175,12 @@ export function PropertyDetail() {
           <div className="mt-12 grid gap-12 lg:grid-cols-12">
             <div className="lg:col-span-8">
               {/* tabs */}
-              <div className="flex gap-2 border-b border-ink/10">
+              <div className="flex gap-2 overflow-x-auto border-b border-ink/10 pb-1">
                 {(['features', 'description', 'neighborhood'] as const).map((t) => (
                   <button
                     key={t}
                     onClick={() => setTab(t)}
-                    className={`relative px-4 py-3 text-sm font-medium capitalize transition-colors ${
+                    className={`relative px-3 py-2.5 text-sm font-medium capitalize whitespace-nowrap transition-colors sm:px-4 sm:py-3 ${
                       tab === t ? 'text-ink' : 'text-ink/40 hover:text-ink/70'
                     }`}
                   >
@@ -204,7 +211,7 @@ export function PropertyDetail() {
                 {tab === 'description' && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     <p className="text-lg leading-relaxed text-ink/80">{property.description}</p>
-                    <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+                    <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
                       {[
                         ['Type', property.type],
                         ['Built', String(property.yearBuilt)],
@@ -223,7 +230,7 @@ export function PropertyDetail() {
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
                     <h3 className="font-display text-2xl">{neighborhood.name}</h3>
                     <p className="mt-3 text-ink/70">{neighborhood.blurb}</p>
-                    <div className="mt-6 grid grid-cols-3 gap-4">
+                    <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
                       <div className="rounded-2xl border border-ink/10 p-4">
                         <p className="text-xs text-ink/40">Homes</p>
                         <p className="mt-1 font-display text-xl">{neighborhood.stats.homes}</p>
@@ -248,7 +255,7 @@ export function PropertyDetail() {
               </div>
 
               {/* mortgage calculator */}
-              <div className="mt-12 rounded-5xl border border-ink/10 bg-cream p-6 sm:p-8">
+              <div className="mt-12 rounded-3xl sm:rounded-5xl border border-ink/10 bg-cream p-6 sm:p-8">
                 <h3 className="font-display text-2xl">Mortgage calculator</h3>
                 <p className="mt-1 text-sm text-ink/50">Estimated at 20% down, 30-year fixed at 6.5%.</p>
                 <div className="mt-6 grid gap-6 sm:grid-cols-3">
@@ -272,8 +279,8 @@ export function PropertyDetail() {
 
             {/* sticky summary */}
             <div className="lg:col-span-4">
-              <div className="sticky top-28 space-y-4">
-                <div className="rounded-5xl border border-ink/10 bg-cream p-6">
+              <div className="space-y-4 lg:sticky lg:top-28">
+                <div className="rounded-3xl border border-ink/10 bg-cream p-5 sm:rounded-5xl sm:p-6">
                   <p className="text-xs uppercase tracking-wide text-ink/40">Listed at</p>
                   <p className="mt-1 font-display text-4xl font-medium tracking-tight">{formatPrice(property.price)}</p>
                   <p className="mt-1 text-sm text-ink/50">
@@ -281,7 +288,7 @@ export function PropertyDetail() {
                   </p>
 
                   {agent && (
-                    <div className="mt-6 flex items-center gap-3 border-t border-ink/10 pt-6">
+                    <div className="mt-6 flex items-center gap-3 border-t border-npmink/10 pt-6">
                       <img src={agent.avatar} alt={agent.name} className="h-12 w-12 rounded-full object-cover" />
                       <div>
                         <p className="text-sm font-medium">{agent.name}</p>
@@ -299,7 +306,7 @@ export function PropertyDetail() {
                 </div>
 
                 {/* schedule a tour */}
-                <div className="rounded-5xl border border-ink/10 bg-ink p-6 text-cream">
+                <div id="tour-form" className="rounded-3xl border border-ink/10 bg-ink p-5 text-cream sm:rounded-5xl sm:p-6">
                   <h3 className="font-display text-xl">Schedule a tour</h3>
                   {tourSent ? (
                     <div className="mt-6 flex flex-col items-center gap-2 py-6 text-center">
@@ -355,6 +362,33 @@ export function PropertyDetail() {
               </div>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Floating Mobile Action Bar */}
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-ink/10 bg-cream/80 glass py-3 lg:hidden">
+        <div className="mx-auto flex items-center justify-between gap-3 px-4 sm:px-5">
+          <div>
+            <p className="text-xs text-ink/50">Listed at</p>
+            <p className="font-display text-xl font-semibold text-ink">{formatPrice(property.price)}</p>
+          </div>
+          <div className="flex gap-2">
+            <a
+              href={`tel:${agent?.phone}`}
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-ink/15 text-ink transition-all active:bg-ink/5"
+              aria-label="Call agent"
+            >
+              <Phone size={15} />
+            </a>
+            <button
+              onClick={() => {
+                document.getElementById('tour-form')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="rounded-full bg-ink px-4 py-2.5 text-sm font-medium text-cream transition-all hover:bg-gold sm:px-6"
+            >
+              Request Tour
+            </button>
+          </div>
         </div>
       </div>
     </PageTransition>
